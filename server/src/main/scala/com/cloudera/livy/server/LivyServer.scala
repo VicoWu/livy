@@ -176,12 +176,13 @@ class LivyServer extends Logging {
             val context = sce.getServletContext()
             context.initParameters(org.scalatra.EnvironmentKey) = livyConf.get(ENVIRONMENT)
 
-            val interactiveServlet =
+            val interactiveServlet = //创建交互式的session servlet
               new InteractiveSessionServlet(interactiveSessionManager, sessionStore, livyConf)
-            mount(context, interactiveServlet, "/sessions/*")
+            mount(context, interactiveServlet, "/sessions/*") //凡是以/sessions都是交互式的
 
             val batchServlet = new BatchSessionServlet(batchSessionManager, sessionStore, livyConf)
-            mount(context, batchServlet, "/batches/*")
+            mount(context, batchServlet, "/batches/*") //创建BatchSessionServlet ，凡是以batches都是batch模式的
+
 
             if (livyConf.getBoolean(UI_ENABLED)) {
               val uiServlet = new UIServlet

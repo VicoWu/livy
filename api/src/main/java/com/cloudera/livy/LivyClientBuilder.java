@@ -40,6 +40,7 @@ public final class LivyClientBuilder {
   /**
    * Creates a new builder that will automatically load the default Livy and Spark configuration
    * from the classpath.
+   * 在InteractiveSession中被调用
    */
   public LivyClientBuilder() throws IOException {
     this(true);
@@ -99,6 +100,11 @@ public final class LivyClientBuilder {
     return this;
   }
 
+  /**
+   * 构建交互式Livy Client,查看InteractiveSession.create()
+   * @return
+   */
+
   public LivyClient build() {
     String uriStr = config.getProperty(LIVY_URI_KEY);
     if (uriStr == null) {
@@ -121,7 +127,7 @@ public final class LivyClientBuilder {
     Exception error = null;
     for (LivyClientFactory factory : loader) {
       try {
-        client = factory.createClient(uri, config);
+        client = factory.createClient(uri, config); //创建交互式session的进程，查看RSCClientFactory.createClient() -> ContextLauncher.create()
       } catch (Exception e) {
         if (!(e instanceof RuntimeException)) {
           e = new RuntimeException(e);

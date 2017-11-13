@@ -231,7 +231,7 @@ class ContextLauncher {
       launcher.setSparkHome(System.getenv(SPARK_HOME_ENV));
       launcher.setAppResource("spark-internal");
       launcher.setPropertiesFile(confFile.getAbsolutePath());
-      launcher.setMainClass(RSCDriverBootstrapper.class.getName());
+      launcher.setMainClass(RSCDriverBootstrapper.class.getName()); //设置main方法的类为RSCDriverBootstrapper，这是我们启动一个本地的livy任务的时候看到的
 
       if (conf.get(PROXY_USER) != null) {
         launcher.addSparkArg("--proxy-user", conf.get(PROXY_USER));
@@ -283,7 +283,7 @@ class ContextLauncher {
         }
 
         for (String key : sparkConf.stringPropertyNames()) {
-          if (!confView.containsKey(key)) {
+          if (!confView.containsKey(key)) { //如果不存在这个key，则设置这个key，可以看到，从spark-defaults.conf读取文件的优先级最低
             confView.put(key, sparkConf.getProperty(key));
           }
         }

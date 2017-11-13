@@ -277,10 +277,10 @@ object InteractiveSession extends Logging {
 
     def mergeConfList(list: Seq[String], key: String): Unit = {
       if (list.nonEmpty) {
-        builderProperties.get(key) match {
+         builderProperties.get(key) match { //配置文件合并，如果builderProperties中没有这个key，则将其设置到builderProperties中
           case None =>
             builderProperties.put(key, list.mkString(","))
-          case Some(oldList) =>
+          case Some(oldList) => //如果builderProperties已经有了这个配置，则将两个配置合并
             val newList = (oldList :: list.toList).mkString(",")
             builderProperties.put(key, newList)
         }

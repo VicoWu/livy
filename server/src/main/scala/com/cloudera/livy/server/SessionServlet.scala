@@ -50,7 +50,7 @@ abstract class SessionServlet[S <: Session, R <: RecoveryMetadata](
    * Creates a new session based on the current request. The implementation is responsible for
    * parsing the body of the request.
    */
-  protected def createSession(req: HttpServletRequest): S
+  protected def createSession(req: HttpServletRequest): S //实现类可以查看BatchSessionServlet.createSession()或者InteractiveSessionServlet
 
   /**
    * Returns a object representing the session data to be sent back to the client.
@@ -118,7 +118,7 @@ abstract class SessionServlet[S <: Session, R <: RecoveryMetadata](
   }
 
   post("/") {
-    val session = sessionManager.register(createSession(request))
+    val session = sessionManager.register(createSession(request)) //这里SessionServlet有可能是BatchSessionServlet，也有可能是InteractiveSessionServlet
     // Because it may take some time to establish the session, update the last activity
     // time before returning the session info to the client.
     session.recordActivity()
