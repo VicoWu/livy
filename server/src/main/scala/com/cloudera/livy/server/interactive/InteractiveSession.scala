@@ -82,6 +82,12 @@ object InteractiveSession extends Logging {
 
       val builderProperties = prepareBuilderProp(conf, request.kind, livyConf)
 
+      /**
+        * 设置提交spark任务的参数，跟踪builder.build()->RSCClientFactory.createClient()  -> ContextLauncher.create() -> ContextLaunder.startDriver() -> ContextLaunder.writeConfToFile()，
+        * 可以看到，如果这个参数没有设置，则会被spark-defaults.conf所覆盖
+        *
+        * */
+
       val userOpts: Map[String, Option[String]] = Map(
         "spark.driver.cores" -> request.driverCores.map(_.toString),
         SparkLauncher.DRIVER_MEMORY -> request.driverMemory.map(_.toString),
